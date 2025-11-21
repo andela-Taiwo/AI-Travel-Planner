@@ -4,3 +4,5 @@ venv/
 logs/
 AI-TRAVEL-PLANNER.egg-info/
 __pycache__/
+ai_travel_planner.egg-info/
+*.pyc
