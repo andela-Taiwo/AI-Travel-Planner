@@ -1,0 +1,6 @@
+venv/
+.env
+.venv/
+logs/
+AI-TRAVEL-PLANNER.egg-info/
+__pycache__/
