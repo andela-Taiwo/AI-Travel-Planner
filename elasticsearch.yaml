@@ -13,13 +13,12 @@ spec:
       labels:
         app: elasticsearch
     spec:
-      # Pod-level security context
       securityContext:
         fsGroup: 1000
       initContainers:
         - name: fix-permissions
           image: busybox:1.35
-          command: ['sh', '-c', 'chown -R 1000:1000 /usr/share/elasticsearch/data']
+          command: ['sh', '-c', 'chown -R 1000:1000 /usr/share/elasticsearch/data && chmod 755 /usr/share/elasticsearch/data']
           securityContext:
             runAsUser: 0
           volumeMounts:
@@ -31,8 +30,9 @@ spec:
           env:
             - name: discovery.type
               value: single-node
+            # Fix for cgroups v2 issue
             - name: ES_JAVA_OPTS
-              value: "-Xms512m -Xmx512m"
+              value: "-Xms512m -Xmx512m -Des.cgroups.hierarchy.override=/"
             - name: xpack.security.enabled
               value: "false"
             - name: bootstrap.memory_lock
@@ -48,7 +48,6 @@ spec:
             requests:
               memory: "1Gi"
               cpu: "500m"
-          # Container-level security context
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
