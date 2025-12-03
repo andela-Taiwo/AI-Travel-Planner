@@ -287,4 +287,14 @@ kubectl get all -n logging
 
 ✅ **Done! Now you can monitor and analyze your K8s logs using ELK + Filebeat. 🎉**
 
+## To keep all service running in the background at all times
+```bash
+tmux new-session -d -s streamlit 'kubectl port-forward svc/streamlit-service 8501:80 --address 0.0.0.0'
+tmux new-session -d -s kibana 'kubectl port-forward -n logging svc/kibana 5601:5601 --address 0.0.0.0'
+
+echo "Services started!"
+echo "Access:"
+echo "  Streamlit:      http://$(curl -s ifconfig.me):8501"
+echo "  Kibana:    http://$(curl -s ifconfig.me):5601"
+```
 ---
